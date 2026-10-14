@@ -140,7 +140,7 @@ function iniciarEscaner() {
   const reader =
     document.getElementById("reader");
 
-  reader.styles.display = "block";
+  reader.style.display = "block";
 
   lectorISBN =
     new Html5Qrcode("reader");
