@@ -147,7 +147,7 @@ function iniciarEscaner() {
 
   lectorISBN.start(
     {
-      facingMode: "environment"
+      facingMode: { ideal: "environment" }
     },
     {
       fps: 10,
