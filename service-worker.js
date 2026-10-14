@@ -1,4 +1,4 @@
-const CACHE_NAME = "biblioteca-v2";
+const CACHE_NAME = "biblioteca-v3";
 
 const FILES_TO_CACHE = [
   "./",
@@ -10,33 +10,34 @@ const FILES_TO_CACHE = [
   "./icon-512.png"
 ];
 
-// Instalar
+// INSTALACIÓN
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => cache.addAll(FILES_TO_CACHE))
   );
 
+  // Fuerza la activación inmediata
   self.skipWaiting();
 });
 
-// Activar
+// ACTIVACIÓN
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     Promise.all([
-      caches.keys().then(keys => {
-        return Promise.all(
+      caches.keys().then(keys =>
+        Promise.all(
           keys
             .filter(key => key !== CACHE_NAME)
             .map(key => caches.delete(key))
-        );
-      }),
+        )
+      ),
       self.clients.claim()
     ])
   );
 });
 
-// Estrategia Cache First
+// FETCH
 self.addEventListener("fetch", (event) => {
 
   if (event.request.method !== "GET") {
@@ -45,38 +46,42 @@ self.addEventListener("fetch", (event) => {
 
   event.respondWith(
     caches.match(event.request)
-      .then(response => {
+      .then(cachedResponse => {
 
-        if (response) {
-          return response;
-        }
-
-        return fetch(event.request)
+        const fetchPromise = fetch(event.request)
           .then(networkResponse => {
 
             if (
-              !networkResponse ||
-              networkResponse.status !== 200
+              networkResponse &&
+              networkResponse.status === 200
             ) {
-              return networkResponse;
+
+              const responseClone =
+                networkResponse.clone();
+
+              caches.open(CACHE_NAME)
+                .then(cache => {
+                  cache.put(
+                    event.request,
+                    responseClone
+                  );
+                });
             }
 
-            const clonedResponse =
-              networkResponse.clone();
-
-            caches.open(CACHE_NAME)
-              .then(cache => {
-                cache.put(
-                  event.request,
-                  clonedResponse
-                );
-              });
-
             return networkResponse;
-          });
-      })
-      .catch(() => {
-        return caches.match("./index.html");
+
+          })
+          .catch(() => cachedResponse);
+
+        return cachedResponse || fetchPromise;
+
       })
   );
+});
+
+// PERMITE FORZAR ACTUALIZACIONES
+self.addEventListener("message", (event) => {
+  if (event.data === "SKIP_WAITING") {
+    self.skipWaiting();
+  }
 });
