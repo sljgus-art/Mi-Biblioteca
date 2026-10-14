@@ -320,12 +320,61 @@ function render() {
 render();
 
 if ("serviceWorker" in navigator) {
+
   window.addEventListener("load", async () => {
+
     try {
-      await navigator.serviceWorker.register("./service-worker.js");
-      console.log("Service Worker registrado");
+
+      const registro =
+        await navigator.serviceWorker.register(
+          "./service-worker.js"
+        );
+
+      console.log(
+        "✅ Service Worker registrado"
+      );
+
+      registro.addEventListener(
+        "updatefound",
+        () => {
+
+          const nuevoSW =
+            registro.installing;
+
+          nuevoSW.addEventListener(
+            "statechange",
+            () => {
+
+              if (
+                nuevoSW.state === "installed" &&
+                navigator.serviceWorker.controller
+              ) {
+
+                console.log(
+                  "🔄 Nueva versión disponible"
+                );
+
+                nuevoSW.postMessage(
+                  "SKIP_WAITING"
+                );
+
+                window.location.reload();
+              }
+
+            }
+          );
+        }
+      );
+
     } catch (error) {
-      console.error("Error al registrar Service Worker:", error);
+
+      console.error(
+        "❌ Error SW:",
+        error
+      );
+
     }
+
   });
+
 }
