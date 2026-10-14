@@ -12,12 +12,13 @@ content="width=device-width, initial-scale=1.0"
 
 <title>📚 Mi Biblioteca</title>
 
-<link
-rel="stylesheet"
-href="styles.css"
+<link rel="stylesheet" href="styles.css">
+
 <link rel="manifest" href="manifest.json">
+
 <meta name="theme-color" content="#2563eb">
-<link rel="icon" href="icon-192.png">  
+
+<link rel="icon" type="image/png" href="icon-192.png">
 
 </head>
 
@@ -33,132 +34,49 @@ Tu biblioteca personal de lectura
 
 <div class="formulario">
 
-<input
-id="titulo"
-type="text"
-placeholder="📖 Título del libro"
->
+<input id="titulo" type="text" placeholder="📖 Título del libro">
+<input id="autor" type="text" placeholder="✍️ Autor">
+<input id="isbn" type="text" placeholder="🔢 ISBN">
 
-<input
-id="autor"
-type="text"
-placeholder="✍️ Autor"
->
-
-<input
-id="isbn"
-type="text"
-placeholder="🔢 ISBN"
->
-
-<button
-class="btn-isbn"
-onclick="iniciarEscaner()"
->
-📷 Escanear ISBN
-</button>
+<button class="btn-isbn" onclick="iniciarEscaner()">📷 Escanear ISBN</button>
 
 <div id="reader"></div>
 
-<button
-class="btn-isbn"
-onclick="buscarISBN()"
->
-🔍 Buscar ISBN
-</button>
+<button class="btn-isbn" onclick="buscarISBN()">🔍 Buscar ISBN</button>
 
-<input
-id="paginas"
-type="number"
-placeholder="📄 Número de páginas"
->
-
-<input
-id="genero"
-type="text"
-placeholder="🏷️ Género"
->
+<input id="paginas" type="number" placeholder="📄 Número de páginas">
+<input id="genero" type="text" placeholder="🏷️ Género">
 
 <select id="estado">
-
-<option value="pendiente">
-🕒 Pendiente
-</option>
-
-<option value="leyendo">
-📖 Leyendo
-</option>
-
-<option value="leido">
-✅ Leído
-</option>
-
-<option value="abandonado">
-❌ Abandonado
-</option>
-
+<option value="pendiente">🕒 Pendiente</option>
+<option value="leyendo">📖 Leyendo</option>
+<option value="leido">✅ Leído</option>
+<option value="abandonado">❌ Abandonado</option>
 </select>
 
-<input
-id="fecha"
-type="date"
->
+<input id="fecha" type="date">
+<input id="portada" type="hidden">
 
-<input
-id="portada"
-type="hidden"
->
-
-<button
-class="btn-primary"
-onclick="agregarLibro()"
->
-💾 Guardar libro
-</button>
+<button class="btn-primary" onclick="agregarLibro()">💾 Guardar libro</button>
 
 </div>
 
 <div class="estadisticas">
-
-<div class="tarjeta">
-<span id="totalLibros">0</span>
-<small>Libros</small>
-</div>
-
-<div class="tarjeta">
-<span id="totalPaginas">0</span>
-<small>Páginas</small>
-</div>
-
-<div class="tarjeta">
-<span id="generoFavorito">-</span>
-<small>Género favorito</small>
-</div>
-
-<div class="tarjeta">
-<span id="autorFavorito">-</span>
-<small>Autor favorito</small>
-</div>
-
+<div class="tarjeta"><span id="totalLibros">0</span><small>Libros</small></div>
+<div class="tarjeta"><span id="totalPaginas">0</span><small>Páginas</small></div>
+<div class="tarjeta"><span id="generoFavorito">-</span><small>Género favorito</small></div>
+<div class="tarjeta"><span id="autorFavorito">-</span><small>Autor favorito</small></div>
 </div>
 
 <h2>📚 Mi biblioteca</h2>
-
 <div id="listaLibros"></div>
 
 </div>
 
 <script src="https://unpkg.com/html5-qrcode"></script>
-
 <script src="app.js"></script>
 
-<button
-class="fab"
-onclick="window.scrollTo({top:0,behavior:'smooth'})"
->
-+
-</button>
+<button class="fab" onclick="window.scrollTo({top:0,behavior:'smooth'})">+</button>
 
 </body>
-
-html
+</html>
